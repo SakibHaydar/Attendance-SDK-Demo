@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "CJlEm2eDqh8=",
+  "success": true,
+  "projectFilePath": "D:\\Attendance SDK DEmo\\AdmsPushApi\\AdmsPushApi.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Ftex-PC-299\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.2\\microsoft.aspnetcore.openapi.10.0.2.nupkg.sha512",
+    "C:\\Users\\Ftex-PC-299\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
