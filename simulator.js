@@ -2,7 +2,7 @@
 // Run with: node simulator.js
 
 const SERVER_URL = "http://localhost:5122/iclock/cdata";
-const DEVICE_SN = "SIMULATOR_001";
+const DEVICE_SN = "JYM6244900194";
 
 async function simulateSwipe(userId) {
     const timestamp = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');

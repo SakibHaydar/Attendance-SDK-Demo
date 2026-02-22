@@ -31,3 +31,4 @@ D:\Attendance SDK DEmo\AdmsPushApi\obj\Debug\net10.0\refint\AdmsPushApi.dll
 D:\Attendance SDK DEmo\AdmsPushApi\obj\Debug\net10.0\AdmsPushApi.pdb
 D:\Attendance SDK DEmo\AdmsPushApi\obj\Debug\net10.0\AdmsPushApi.genruntimeconfig.cache
 D:\Attendance SDK DEmo\AdmsPushApi\obj\Debug\net10.0\ref\AdmsPushApi.dll
+D:\Attendance SDK DEmo\AdmsPushApi\obj\Debug\net10.0\AdmsPushApi.sourcelink.json
