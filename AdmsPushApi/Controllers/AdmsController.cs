@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Threading.Tasks;
+using System;
+using AdmsPushApi.Data;
+using AdmsPushApi.Models;
 
 namespace AdmsPushApi.Controllers
 { 
@@ -8,6 +11,13 @@ namespace AdmsPushApi.Controllers
     [Route("iclock")]
     public class AdmsController : ControllerBase
     {
+        private readonly AppDbContext _dbContext;
+
+        public AdmsController(AppDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         // 1. Handshake / Initialization (Device checks server parameters)
         [HttpGet("cdata")]
         public IActionResult Handshake([FromQuery] string SN)
@@ -32,7 +42,30 @@ namespace AdmsPushApi.Controllers
             Console.WriteLine($"[ADMS] Received Data [{table}] from SN {SN}:");
             Console.WriteLine(content);
             
-            // TODO: Parse 'content' according to the 'table' type (ATTLOG, OPERLOG) and save to DB
+            if (table == "ATTLOG" || string.IsNullOrEmpty(table))
+            {
+                // Parse the raw tab-separated lines
+                var lines = content.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var line in lines)
+                {
+                    var fields = line.Split('\t');
+                    if (fields.Length >= 6)
+                    {
+                        var record = new AttendanceRecord
+                        {
+                            DeviceSerialNumber = SN,
+                            UserId = fields[0],
+                            Timestamp = DateTime.Parse(fields[1]), // e.g., 2026-02-22 08:53:10
+                            Status = int.Parse(fields[2]),
+                            VerifyMode = int.Parse(fields[3]),
+                            WorkCode = int.Parse(fields[4])
+                        };
+                        _dbContext.AttendanceRecords.Add(record);
+                    }
+                }
+                await _dbContext.SaveChangesAsync();
+                Console.WriteLine($"[ADMS] Saved {lines.Length} attendance records to SQLite.");
+            }
             
             // The device requires a literal "OK" followed by a newline to acknowledge receipt
             return Content("OK\r\n", "text/plain");
@@ -58,6 +91,15 @@ namespace AdmsPushApi.Controllers
             Console.WriteLine(content);
             
             return Content("OK\r\n", "text/plain");
+        }
+
+        // --- Demo Helper Endpoint ---
+        // View all saved attendance records in the browser as JSON
+        [HttpGet("records")]
+        public IActionResult GetRecords()
+        {
+            var records = _dbContext.AttendanceRecords.OrderByDescending(r => r.Timestamp).ToList();
+            return Ok(records);
         }
     }
 }
