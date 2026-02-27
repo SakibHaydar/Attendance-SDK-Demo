@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance Log Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background-color: #f4f7f6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #fafafa;
+            border-radius: 5px;
+        }
+
+        label,
+        button {
+            margin-right: .5rem;
+        }
+
+        input[type="date"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 1rem;
+            background: white;
+        }
+
+        th,
+        td {
+            border: 1px solid #eee;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #f8f9fa;
+            color: #555;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .bg-in {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .bg-out {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .bg-mode {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        #status {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div style="float:right;">
+            <a href="iclock/viewlog" target="_blank" style="font-size:0.8rem; color:#007bff; text-decoration:none;">View
+                Diagnostic Logs ↑</a>
+        </div>
+        <h1>Attendance Log Dashboard</h1>
+
+        <div class="controls">
+            <h3 style="margin-top:0">View Logs</h3>
+            <label for="logDate">Select date:</label>
+            <input type="date" id="logDate">
+            <button id="loadBtn">Load Daily Logs</button>
+        </div>
+
+        <div class="controls" style="border-left: 5px solid #ffc107;">
+            <h3 style="margin-top:0; color:#856404;">Device Sync</h3>
+            <p style="font-size:0.85rem; color:#666; margin-bottom:10px;">If logs are missing on this server, use this
+                to tell the device to re-send historical data.</p>
+            <label for="syncDate">Start from:</label>
+            <input type="date" id="syncDate">
+            <button id="syncBtn" style="background:#ffc107; color:#000;">Request Sync to Cloud</button>
+        </div>
+
+        <div id="status"></div>
+        <table id="logTable" hidden>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Device SN</th>
+                    <th>User Id</th>
+                    <th>Timestamp</th>
+                    <th>Status</th>
+                    <th>Verify Mode</th>
+                    <th>Work Code</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        const btn = document.getElementById('loadBtn');
+        const syncBtn = document.getElementById('syncBtn');
+        const dateInput = document.getElementById('logDate');
+        const syncDateInput = document.getElementById('syncDate');
+        const statusDiv = document.getElementById('status');
+        const table = document.getElementById('logTable');
+        const tbody = table.querySelector('tbody');
+
+        const getStatusLabel = (code) => {
+            const labels = {
+                0: '<span class="badge bg-in">Check In</span>',
+                1: '<span class="badge bg-out">Check Out</span>',
+                2: '<span class="badge bg-out">Break Out</span>',
+                3: '<span class="badge bg-in">Break In</span>',
+                4: '<span class="badge bg-in">OT In</span>',
+                5: '<span class="badge bg-out">OT Out</span>'
+            };
+            return labels[code] || `<span class="badge bg-mode">Other (${code})</span>`;
+        };
+
+        const getVerifyLabel = (code) => {
+            const labels = {
+                0: 'Password',
+                1: 'Fingerprint',
+                2: 'Card',
+                3: 'Face',
+                4: 'Finger+Pass',
+                15: 'Face+Finger',
+                25: 'Face/multi'
+            };
+            return `<span class="badge bg-mode">${labels[code] || 'Code ' + code}</span>`;
+        };
+
+        btn.addEventListener('click', async () => {
+            const date = dateInput.value;
+            if (!date) { statusDiv.textContent = 'Please pick a date.'; return; }
+            statusDiv.textContent = 'Loading records...';
+            tbody.innerHTML = '';
+            table.hidden = true;
+            try {
+                const resp = await fetch(`iclock/recordsbydate?date=${date}`);
+                if (!resp.ok) throw new Error(`Server returned ${resp.status}`);
+                const data = await resp.json();
+                if (data.length === 0) { statusDiv.textContent = 'No records found for this date.'; return; }
+
+                data.forEach(r => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${r.id}</td>
+                        <td style="font-size:0.8rem; color:#666">${r.deviceSerialNumber}</td>
+                        <td><strong>${r.userId}</strong></td>
+                        <td>${new Date(r.timestamp).toLocaleString()}</td>
+                        <td>${getStatusLabel(r.status)}</td>
+                        <td>${getVerifyLabel(r.verifyMode)}</td>
+                        <td>${r.workCode === 0 ? '-' : r.workCode}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                table.hidden = false;
+                statusDiv.textContent = `Successfully loaded ${data.length} records.`;
+            } catch (e) {
+                console.error(e);
+                statusDiv.textContent = 'Error loading data. Is the server running?';
+            }
+        });
+
+        syncBtn.addEventListener('click', async () => {
+            const date = syncDateInput.value;
+            if (!date) { alert('Please pick a start date for the sync.'); return; }
+
+            // For a production app, you would pass the specific SN here.
+            // For this demo, we auto-grab the SN from the most recent record or a hardcoded one.
+            // But usually, the device SN is known by the server.
+            // We'll prompt for SN or use a common one if we have it.
+            let sn = prompt("Please enter Device Serial Number:", "JYM6244900194");
+            if (!sn) return;
+
+            statusDiv.textContent = 'Queueing sync command...';
+            try {
+                const resp = await fetch(`iclock/requestsync?sn=${sn}&date=${date}`);
+                const result = await resp.json();
+                alert(result.message);
+                statusDiv.textContent = 'Sync command queued. Please wait a minute for the device to respond.';
+            } catch (e) {
+                alert('Failed to queue sync command.');
+            }
+        });
+
+        // Set default date to today
+        const today = new Date();
+        dateInput.valueAsDate = today;
+        syncDateInput.valueAsDate = today;
+    </script>
+</body>
+
+</html>
