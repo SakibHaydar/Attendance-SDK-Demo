@@ -154,4 +154,16 @@ D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\AdmsPushApi.runti
 D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\AdmsPushApi.staticwebassets.endpoints.json
 D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\appsettings.Development.json
 D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\appsettings.json
-D:\Attendance SDK DEmo\AdmsPushApi\obj\Release\net10.0\compressed\48x0hg7cld-{0}-8ay2o2z4va-8ay2o2z4va.gz
+D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\publish\web.config
+D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\publish\AdmsPushApi.deps.json
+D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\publish\AdmsPushApi.runtimeconfig.json
+D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\publish\AdmsPushApi.staticwebassets.endpoints.json
+D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\publish\appsettings.Development.json
+D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\publish\appsettings.json
+D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\publish\publish\web.config
+D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\publish\publish\AdmsPushApi.deps.json
+D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\publish\publish\AdmsPushApi.runtimeconfig.json
+D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\publish\publish\AdmsPushApi.staticwebassets.endpoints.json
+D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\publish\publish\appsettings.Development.json
+D:\Attendance SDK DEmo\AdmsPushApi\bin\Release\net10.0\publish\publish\publish\appsettings.json
+D:\Attendance SDK DEmo\AdmsPushApi\obj\Release\net10.0\compressed\48x0hg7cld-{0}-ummtjayj91-ummtjayj91.gz

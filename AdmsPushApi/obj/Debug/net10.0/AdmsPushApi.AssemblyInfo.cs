@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AdmsPushApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f5d06648b0484c9d7898f352cfeb5e02c1dc248a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+acaef61b2ff81f000de3a1bc2c91022fb0464418")]
 [assembly: System.Reflection.AssemblyProductAttribute("AdmsPushApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AdmsPushApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

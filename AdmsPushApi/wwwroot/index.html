@@ -223,21 +223,60 @@
             const date = syncDateInput.value;
             if (!date) { alert('Please pick a start date for the sync.'); return; }
 
-            // For a production app, you would pass the specific SN here.
-            // For this demo, we auto-grab the SN from the most recent record or a hardcoded one.
-            // But usually, the device SN is known by the server.
-            // We'll prompt for SN or use a common one if we have it.
             let sn = prompt("Please enter Device Serial Number:", "JYM6244900194");
             if (!sn) return;
 
-            statusDiv.textContent = 'Queueing sync command...';
+            statusDiv.innerHTML = '<span style="color:#856404;">⏳ Getting current state...</span>';
+
             try {
-                const resp = await fetch(`iclock/requestsync?sn=${sn}&date=${date}`);
-                const result = await resp.json();
-                alert(result.message);
-                statusDiv.textContent = 'Sync command queued. Please wait a minute for the device to respond.';
+                // 1. Get initial record count for the date
+                const countResp = await fetch(`iclock/recordsbydate?date=${date}`);
+                const initialData = await countResp.json();
+                const initialCount = initialData.length;
+
+                // 2. Queue the command
+                const syncResp = await fetch(`iclock/requestsync?sn=${sn}&date=${date}`);
+                const syncResult = await syncResp.json();
+
+                if (!syncResult.isOnline) {
+                    const proceed = confirm(`Warning: Device ${sn} appears offline. Last seen: ${syncResult.lastSeen}. Proceed anyway?`);
+                    if (!proceed) { statusDiv.innerHTML = ''; return; }
+                }
+
+                // 3. Start Polling & Countdown
+                let secondsLeft = 120;
+                statusDiv.innerHTML = `<span style="color:#0056b3;">📡 Sync command sent! Waiting for device response... <strong id="countdown">${secondsLeft}s</strong></span><br/>` +
+                    `<small style="color:#666;">Watching for new records on ${date}. This will verify your connection.</small>`;
+
+                const pollInterval = setInterval(async () => {
+                    secondsLeft -= 5;
+                    const countdownEl = document.getElementById('countdown');
+                    if (countdownEl) countdownEl.textContent = `${secondsLeft}s`;
+
+                    // Check for new data
+                    try {
+                        const checkResp = await fetch(`iclock/recordsbydate?date=${date}`);
+                        const currentData = await checkResp.json();
+
+                        if (currentData.length > initialCount) {
+                            clearInterval(pollInterval);
+                            const freshCount = currentData.length - initialCount;
+                            statusDiv.innerHTML = `<span style="color:#155724; font-size:1.2rem;">✨ Success! ${freshCount} new records found for ${date}.</span>`;
+                            btn.click(); // Refresh the table
+                            return;
+                        }
+                    } catch (e) { console.error("Poll error", e); }
+
+                    if (secondsLeft <= 0) {
+                        clearInterval(pollInterval);
+                        statusDiv.innerHTML = `<span style="color:#721c24; font-size:1.1rem;">❌ Connection not established / No data found.</span><br/>` +
+                            `<small style="color:#666;">Tried for 120 seconds. The device might be offline, out of logs, or using a different SN. Check Diagnostic Logs.</small>`;
+                    }
+                }, 5000);
+
             } catch (e) {
-                alert('Failed to queue sync command.');
+                statusDiv.innerHTML = '<span style="color:#721c24;">❌ Error communicating with the server.</span>';
+                console.error(e);
             }
         });
 

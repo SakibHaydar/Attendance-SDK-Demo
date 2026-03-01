@@ -1,4 +1,6 @@
 D:\Attendance SDK DEmo\AdmsPushApi\publish\AdmsPushApi.exe
+D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\publish\publish\web.config
+D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\publish\web.config
 D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\web.config
 D:\Attendance SDK DEmo\AdmsPushApi\publish\appsettings.Development.json
 D:\Attendance SDK DEmo\AdmsPushApi\publish\appsettings.json
@@ -7,6 +9,16 @@ D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\AdmsPushApi.runtimeconfig.jso
 D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\AdmsPushApi.staticwebassets.endpoints.json
 D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\appsettings.Development.json
 D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\appsettings.json
+D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\publish\AdmsPushApi.deps.json
+D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\publish\AdmsPushApi.runtimeconfig.json
+D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\publish\AdmsPushApi.staticwebassets.endpoints.json
+D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\publish\appsettings.Development.json
+D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\publish\appsettings.json
+D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\publish\publish\AdmsPushApi.deps.json
+D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\publish\publish\AdmsPushApi.runtimeconfig.json
+D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\publish\publish\AdmsPushApi.staticwebassets.endpoints.json
+D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\publish\publish\appsettings.Development.json
+D:\Attendance SDK DEmo\AdmsPushApi\publish\publish\publish\publish\appsettings.json
 D:\Attendance SDK DEmo\AdmsPushApi\publish\AdmsPushApi.dll
 D:\Attendance SDK DEmo\AdmsPushApi\publish\AdmsPushApi.runtimeconfig.json
 D:\Attendance SDK DEmo\AdmsPushApi\publish\AdmsPushApi.pdb

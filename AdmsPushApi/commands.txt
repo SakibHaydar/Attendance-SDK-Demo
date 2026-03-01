@@ -1,0 +1,4 @@
+pinggy: ssh -p 443 -R0:localhost:5122 -o StrictHostKeyChecking=no a.pinggy.io
+
+
+Dotnet run: & "C:\Program Files (x86)\dotnet\dotnet.exe" run
