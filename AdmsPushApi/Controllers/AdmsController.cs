@@ -33,7 +33,8 @@ namespace AdmsPushApi.Controllers
             try
             {
                 var logMsg = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {message}{Environment.NewLine}";
-                System.IO.File.AppendAllText("device_log.txt", logMsg);
+                var logPath = Path.Combine(AppContext.BaseDirectory, "device_log.txt");
+                System.IO.File.AppendAllText(logPath, logMsg);
             }
             catch { }
         }
